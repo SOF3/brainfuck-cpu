@@ -734,7 +734,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="4" loc="(490,330)" name="ROM">
       <a name="addrWidth" val="24"/>
       <a name="contents">addr/data: 24 8
-0
+12 34 f2
 </a>
     </comp>
     <comp lib="0" loc="(320,200)" name="Constant">
