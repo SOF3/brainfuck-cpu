@@ -253,7 +253,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="4" loc="(220,470)" name="ROM">
       <a name="addrWidth" val="24"/>
       <a name="contents">addr/data: 24 8
-de ad c0 de ca fe f3 3d
+d3 ad be 3f ca fe f3 3d
 </a>
     </comp>
     <comp lib="0" loc="(60,490)" name="Tunnel">
