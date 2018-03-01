@@ -72,4 +72,5 @@ Accepting the argument FILE\_BASENAME, bfc will parse the {FILE\_BASENAME}.bf fi
 
 Then it will emit the following files:
 * {FILE\_BASENAME}.min.bf: The syntactically minified Brainfuck program code, i.e. only instruction bytes are left.
-* {FILE\_BASENAME}.bfc: The Brainfuck code is compiled into the
+* {FILE\_BASENAME}.bfc: The Brainfuck code is compiled into binary form, equivalent what is loaded inside the instruction ROM. The higher 4 bits (7:4) are unused. Bit 3 is the shutdown bit. The lower 3 bits (2:0) are BFC-encoded instructions.
+* {FILE\_BASENAME}.bfc.txt: The BFC file converted into plaintext, compatible with Logisim ROM imports.
