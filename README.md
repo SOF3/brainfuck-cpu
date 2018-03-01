@@ -52,9 +52,11 @@ The following bitsets correspond to symbolic instructions in the Brainfuck langu
 | `111` | `]` | If current memory value is not 0, jumps back to the matching `[` |
 
 ### Memory allocation
-* Memory pointer size: 24 bits
-* Instruction pointer size: 24 bits
-* `[]` stack limit: 64 levels
+* boolean: 1 bit
+* instr\_size: 3 bits
+* datapath\_size: 24 bits
+* mempath\_size: 24 bits
+* cell\_size: 8 bits
 
 ### Synchronization
 The whole circuit is currently synchronous with the same main clock. However, constraints in stdin and Register24Stack64 may require double-ticking. Formal proof is required to confirm.
