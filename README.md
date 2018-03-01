@@ -3,11 +3,11 @@ This repo contains a Logisim schematic file for a programmable circuit implement
 
 Structure:
 * main: contains everything that functions as a "complete" "computer", including:
-  * 1 24-bit ROM: contains 3-bit Brainfuck instructions. See the encoding specification below.
+  * 1 24-bit ROM: contains 4-bit units of data. In each unit, bits 2:0 are encoded as BFC instructions. See the encoding specification below. Bit 3 is the special "shutdown" signal that hangs the clock.
   * 1 24-bit RAM: contains 8-bit units of data, serving as the memory byte array for the Brainfuck environment.
   * 1 main clock: the clock that regulates the synchronization of the whole system. This implementation should be synchronous
-  * 1 stdin: an "input stream" subcircuit providing the stdin pipe for the Brainfuck environment.  that reads bytes from its ROM backend and moves on when a byte has been read. The ROM size is internal.
-  * 1 stdout: an "output stream" subcircuit providing the stdout pipe for the Brainfuck environment.  that appends bytes to its RAM backend. The RAM size is internal.
+  * 1 stdin ROM: a counter+ROM complex providing the stdin pipe for the Brainfuck environment. It reads bytes from its ROM backend, incrementing the address when the CPU signals that a byte has been read.
+  * 1 stdout RAM: a counter+RAM complex providing the stdout pipe for the Brainfuck environment. It appends bytes to its RAM backend.
   * 1 CPU: the instruction processor
 * brainfuck/cpu:
   * Inputs:
@@ -37,7 +37,8 @@ Structure:
     * `~push & pop`: POP action, removing the last-inserted entry from the stack. Output is undefined.
   * Needs formal proof to determine if brainfuck/cpu might experience bugs due to a PUSH/POP action not being able to output the tail value in the same tick. If issues exist, may need doueble-ticking.
 
-### Brainfuck 3-bit encoding
+### BFC 3-bit encoding
+BFC means "Brainfuck compiled". It is a simple mapping of Brainfuck instructions into 3-bit units.
 The following bitsets correspond to symbolic instructions in the Brainfuck language:
 
 | Bitset (2:0) | Symbol | Synopsis |
@@ -48,8 +49,8 @@ The following bitsets correspond to symbolic instructions in the Brainfuck langu
 | `011` | `-` | Decrements the memory value |
 | `100` | `.` | Sends the current memory value to stdout |
 | `101` | `,` | Consumes the current stdin value and stores it in the current memory value |
-| `110` | `[` | If current memory value is 0, skips to the matching `]`, which is not necessarily the immediately following one |
-| `111` | `]` | If current memory value is not 0, jumps back to the matching `[` |
+| `110` | `[` | If current memory value is 0, skips to the matching `]` behind, which is not necessarily the immediately following one |
+| `111` | `]` | If current memory value is not 0, jumps back to the matching `[` before |
 
 ### Memory allocation
 * boolean: 1 bit
@@ -63,3 +64,12 @@ The whole circuit is currently synchronous with the same main clock. However, co
 
 ### RESET
 This implementation defines that all memory cells start at 0.
+
+### The `bfc` utility
+bfc.cpp is a standalone C++ file that can be compiled to build Brainfuck programs.
+
+Accepting the argument FILE\_BASENAME, bfc will parse the {FILE\_BASENAME}.bf file
+
+Then it will emit the following files:
+* {FILE\_BASENAME}.min.bf: The syntactically minified Brainfuck program code, i.e. only instruction bytes are left.
+* {FILE\_BASENAME}.bfc: The Brainfuck code is compiled into the
