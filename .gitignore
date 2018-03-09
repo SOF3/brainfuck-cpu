@@ -2,3 +2,5 @@
 *.o
 *.bfc
 *.min.bf
+*.bak
+*.bak[2-0]
